@@ -21,6 +21,9 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+ENV TZ=America/Merida
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Copiar el resto del proyecto
 COPY . .
 
