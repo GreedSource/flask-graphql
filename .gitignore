@@ -1,0 +1,60 @@
+# Entorno virtual
+.venv/
+venv/
+ENV/
+env/
+
+# Archivos Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de logs
+*.log
+
+# Configuración de usuario de VSCode
+.vscode/
+
+# Archivos de pruebas / cobertura
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+test-results/
+.pytest_cache/
+
+# Archivos de Jupyter (por si los usas)
+.ipynb_checkpoints/
+
+# Archivos de entorno y configuración local
+.env
+*.env
+.env.*
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de Docker creados en el build
+*.pid
+*.tar
+docker-compose.override.yml
+
+# Salidas de build temporales
+dist/
+build/
+*.egg-info/
+
+# Mongo dump o archivos temporales de base de datos
+dump/
+*.bson
+*.mongodump
+*.json
+
+# Archivos de IDEs
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Archivos del runtime
+*.sqlite3
