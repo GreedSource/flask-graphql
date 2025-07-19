@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 import os
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError, PyMongoError
@@ -58,6 +59,9 @@ class MongoHelper:
         self._check_collection_allowed(collection_name)
         collection = self.db[collection_name]
         try:
+            now = datetime.now(timezone.utc)
+            document["created_at"] = now
+            document["updated_at"] = now
             result = collection.insert_one(document)
             return result.inserted_id
         except DuplicateKeyError as e:
@@ -98,6 +102,10 @@ class MongoHelper:
     ):
         self._check_collection_allowed(collection_name)
         collection = self.db[collection_name]
+        if "$set" not in update:
+            update["$set"] = {}
+
+        update["$set"]["updated_at"] = datetime.now(timezone.utc)
         result = collection.update_one(filter_, update, upsert=upsert)
         return {
             "matched_count": result.matched_count,
