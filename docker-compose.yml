@@ -5,7 +5,8 @@ services:
       dockerfile: dockerfile
     container_name: graphql_api
     volumes:
-      - .:/app
+      - ./app.py:/app/app.py
+      - ./server:/app/server
     ports:
       - '5000:5000'
     env_file:

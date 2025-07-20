@@ -14,8 +14,14 @@ __mongo_helper = MongoHelper(allowed_collections=["users"])
 def __create_index():
     __mongo_helper.create_index(
         "users",
-        [("username", ASCENDING), ("email", ASCENDING)],
-        name="UQ_EMAIL_USERNAME_IDX",
+        [("email", ASCENDING)],
+        name="UQ_EMAIL_IDX",
+        unique=True,
+    )
+    __mongo_helper.create_index(
+        "users",
+        [("username", ASCENDING)],
+        name="UQ_USERNAME_IDX",
         unique=True,
     )
 
@@ -52,13 +58,7 @@ def resolve_user(_, info, id):
 @mutation.field("register")
 def resolve_register(_, info, input):
     model = RegisterModel(**input)
-    hashed_pw = hash_password(model.password)
-    user_data = {
-        "username": model.username,
-        "email": model.email,
-        "password": hashed_pw,
-        "isAdmin": False,
-    }
+    user_data = model.model_dump()
     inserted_id = __mongo_helper.insert_one("users", user_data)
     user_data["_id"] = inserted_id
 

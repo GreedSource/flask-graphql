@@ -1,7 +1,15 @@
 import re
-from pydantic import BaseModel, Field, field_validator, model_validator, EmailStr
+from pydantic import (
+    BaseModel,
+    Field,
+    computed_field,
+    field_validator,
+    model_validator,
+    EmailStr,
+)
 
 from server.helpers.custom_graphql_exception_helper import CustomGraphQLExceptionHelper
+from server.utils.auth_utils import hash_password
 
 
 class RegisterModel(BaseModel):
@@ -14,9 +22,11 @@ class RegisterModel(BaseModel):
     def check_password_match(self):
         if self.password != self.confirm_password:
             raise CustomGraphQLExceptionHelper("Password mismatch.")
+        self.password = hash_password(self.password)
+        del self.__dict__["confirm_password"]
         return self
 
-    @field_validator("password")
+    @field_validator("password", "confirm_password")
     def strong_password(cls, v):
         # Al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo
         pattern = (
@@ -28,6 +38,11 @@ class RegisterModel(BaseModel):
                 "una minúscula, un número y un carácter especial (@$!%*?&)."
             )
         return v
+
+    @computed_field
+    @property
+    def isAdmin(cls) -> bool:
+        return True
 
 
 class UpdateUserModel(BaseModel):

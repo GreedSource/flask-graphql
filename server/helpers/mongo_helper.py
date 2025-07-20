@@ -14,12 +14,14 @@ from server.helpers.logger_helper import LoggerHelper
 @singleton
 class MongoHelper:
     def __init__(self, uri=None, allowed_collections=None):
+        dbname = os.getenv("MONGO_DB_NAME", "graphqlapp")
         self.uri = uri or os.getenv("MONGO_URI", "mongodb://localhost:27017")
         self.client = MongoClient(self.uri)
-        self.db = self.client[os.getenv("MONGO_DB_NAME", "graphqlapp")]
+        self.db = self.client[dbname]
         self.allowed_collections = (
             set(allowed_collections) if allowed_collections else None
         )
+        LoggerHelper.success(f"Connected to '{dbname}' database.")
 
     def _check_collection_allowed(self, name: str):
         if (
@@ -74,7 +76,6 @@ class MongoHelper:
                 code="RESOURCE_ALREADY_EXISTS",
                 details={"collection": collection_name},
             )
-            raise CustomGraphQLExceptionHelper("Documento duplicado")
         except PyMongoError as e:
             raise CustomGraphQLExceptionHelper("Error al insertar documento: " + str(e))
 
