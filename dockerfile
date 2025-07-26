@@ -26,6 +26,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copiar solo el código fuente necesario
 COPY server/ server/
+COPY app.py .
 
 # Comando para correr la app (ajústalo según tu entrypoint)
 CMD ["python", "app.py"]
