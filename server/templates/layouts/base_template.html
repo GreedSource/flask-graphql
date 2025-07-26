@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{{ subject or "Correo" }}</title>
+    <style type="text/css">
+      /* Reset & básicos */
+      body,
+      table,
+      td,
+      a {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+      img {
+        -ms-interpolation-mode: bicubic;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        height: 100% !important;
+        background-color: #f0f0f0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
+      table {
+        border-collapse: collapse !important;
+      }
+
+      /* Contenedor principal */
+      .email-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Header */
+      .email-header {
+        background-color: #f27f6b; /* naranja */
+        padding: 20px;
+        text-align: center;
+        color: #ffffff;
+      }
+      .email-header img {
+        max-height: 40px;
+      }
+
+      /* Cuerpo */
+      .email-body {
+        padding: 30px 40px;
+        color: #333333;
+        font-size: 16px;
+        line-height: 1.5;
+        background-color: #f9f9f9; /* gris claro */
+      }
+      .email-body h1 {
+        margin-top: 0;
+        color: #cc5200; /* naranja oscuro */
+        font-weight: 700;
+        font-size: 24px;
+      }
+      .email-body p {
+        margin: 15px 0;
+      }
+      .email-body a.button {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #f27f6b; /* naranja */
+        color: #ffffff !important;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 600;
+        margin-top: 20px;
+      }
+
+      /* Footer */
+      .email-footer {
+        font-size: 12px;
+        color: #999999;
+        text-align: center;
+        padding: 20px;
+        background-color: #f0f0f0; /* mismo gris de fondo */
+      }
+
+      /* Responsive */
+      @media screen and (max-width: 620px) {
+        .email-body {
+          padding: 20px 15px;
+        }
+        .email-container {
+          width: 100% !important;
+          border-radius: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <table
+        role="presentation"
+        class="email-container"
+        width="600"
+        cellpadding="0"
+        cellspacing="0"
+        aria-hidden="true"
+      >
+        <tr>
+          <td class="email-header">
+            <!-- Logo aquí -->
+            <img src="https://yourdomain.com/logo.png" alt="Tu Logo" />
+          </td>
+        </tr>
+
+        <tr>
+          <td class="email-body">
+            {% block content %}
+            <!-- Aquí va el contenido dinámico -->
+            <h1>Hola,</h1>
+            <p>Este es un email con diseño naranja y fondo gris claro.</p>
+            <a href="#" class="button">Acción Principal</a>
+            {% endblock %}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="email-footer">
+            © {{ year or "2025" }} Tu Empresa. Todos los derechos reservados.<br />
+            <a
+              href="https://tusitio.com/privacidad"
+              style="color: #999999; text-decoration: none"
+              >Política de Privacidad</a
+            >
+            |
+            <a
+              href="https://tusitio.com/contacto"
+              style="color: #999999; text-decoration: none"
+              >Contacto</a
+            >
+          </td>
+        </tr>
+      </table>
+    </center>
+  </body>
+</html>
