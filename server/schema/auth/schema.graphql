@@ -1,12 +1,13 @@
 input RegisterInput {
-  username: String!
+  name: String!
+  lastname: String!
   email: String!
   password: String!
   confirm_password: String!
 }
 
 input LoginInput {
-  username: String!
+  email: String!
   password: String!
 }
 

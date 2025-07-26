@@ -11,16 +11,3 @@ services:
       - '5000:5000'
     env_file:
       - .env
-    depends_on:
-      - mongo
-
-  mongo:
-    image: mongo:6
-    container_name: mongodb
-    ports:
-      - '27017:27017'
-    volumes:
-      - mongo_data:/data/db
-
-volumes:
-  mongo_data:

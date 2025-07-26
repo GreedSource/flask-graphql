@@ -1,10 +1,13 @@
 from ariadne import QueryType, MutationType
 from bson import ObjectId
+from server.decorators.singleton_decorator import singleton
+from server.helpers.logger_helper import LoggerHelper
 from server.models.user_model import UpdateUserModel
 from server.helpers.mongo_helper import MongoHelper
 from server.helpers.custom_graphql_exception_helper import CustomGraphQLExceptionHelper
 
 
+@singleton
 class UserResolver:
     def __init__(self):
         self.query = QueryType()
@@ -12,6 +15,7 @@ class UserResolver:
         self.__mongo_helper = MongoHelper(allowed_collections=["users"])
         self._bind_queries()
         self._bind_mutations()
+        LoggerHelper.info(f"{self.__class__.__name__} initialized")
 
     def _bind_queries(self):
         self.query.set_field("users", self.resolve_users)
@@ -24,7 +28,8 @@ class UserResolver:
     def user_to_dict(self, user):
         return {
             "id": str(user["_id"]),
-            "username": user["username"],
+            "name": user["name"],
+            "lastname": user["lastname"],
             "email": user["email"],
             "isAdmin": user.get("isAdmin", False),
         }

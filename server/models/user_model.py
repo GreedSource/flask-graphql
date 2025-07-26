@@ -13,10 +13,16 @@ from server.utils.auth_utils import hash_password
 
 
 class RegisterModel(BaseModel):
-    username: str = Field(..., description="Username")
+    name: str = Field(..., description="User name", min_length=3)
+    lastname: str = Field(..., description="User lastname", min_length=3)
     email: EmailStr = Field(..., description="User email")
     password: str = Field(..., description="Password")
     confirm_password: str = Field(..., description="Password confirmation")
+
+    @model_validator(mode="before")
+    @classmethod
+    def trim_all_str_fields(cls, values: dict) -> dict:
+        return {k: v.strip() if isinstance(v, str) else v for k, v in values.items()}
 
     @model_validator(mode="after")
     def check_password_match(self):
@@ -46,16 +52,7 @@ class RegisterModel(BaseModel):
 
 
 class UpdateUserModel(BaseModel):
-    username: str | None = Field(None, description="Username")
+    name: str = Field(..., description="User name", min_length=3)
+    lastname: str = Field(..., description="User lastname", min_length=3)
     email: EmailStr | None = Field(None, description="User email")
     isAdmin: bool | None = Field(None, description="Is user admin")
-
-    @field_validator("username")
-    def validate_username(cls, v):
-        if v is None:
-            return v
-        if not re.match(r"^[a-zA-Z0-9_.-]{3,30}$", v):
-            raise CustomGraphQLExceptionHelper(
-                "El nombre de usuario debe tener entre 3 y 30 caracteres y solo puede contener letras, números, guiones bajos, puntos o guiones."
-            )
-        return v

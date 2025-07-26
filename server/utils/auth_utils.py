@@ -1,3 +1,4 @@
+import os
 from typing import Any, Dict
 import bcrypt
 import jwt
@@ -6,8 +7,8 @@ from datetime import datetime, timedelta, timezone
 from server.enums.http_error_code_enum import HTTPErrorCode
 from server.helpers.custom_graphql_exception_helper import CustomGraphQLExceptionHelper
 
-SECRET_KEY = "your-secret"
-REFRESH_SECRET_KEY = "your-refresh-secret"
+SECRET_KEY = os.getenv("SECRET_KEY", "SECRET_KEY")
+REFRESH_SECRET_KEY = os.getenv("REFRESH_SECRET_KEY", "REFRESH_SECRET_KEY")
 
 
 def hash_password(password):
@@ -20,7 +21,7 @@ def verify_password(password, hashed):
 
 def create_token(payload: dict, expires_in: int = 15) -> str:
     data = payload.copy()
-    data["exp"] = datetime.now(timezone.utc) + timedelta(minutes=expires_in)
+    data["exp"] = datetime.now(timezone.utc) + timedelta(seconds=5)
     return jwt.encode(data, SECRET_KEY, algorithm="HS256")
 
 
