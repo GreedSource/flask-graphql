@@ -1,5 +1,6 @@
 import logging
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from ariadne import graphql_sync
 from ariadne.explorer import ExplorerGraphiQL
 
@@ -14,6 +15,8 @@ logging.getLogger("ariadne").setLevel(logging.CRITICAL)
 
 def create_app():
     app = Flask(__name__)
+    # Habilita CORS para todas las rutas y orígenes
+    CORS(app, resources={r"/graphql": {"origins": "*"}})
     explorer_html = ExplorerGraphiQL().html(None)
 
     @app.route("/", methods=["GET"])

@@ -1,8 +1,12 @@
+from typing import Any, Dict
 import bcrypt
 import jwt
 from datetime import datetime, timedelta, timezone
 
-SECRET = "tu_secreto_super_seguro"
+from server.helpers.custom_graphql_exception_helper import CustomGraphQLExceptionHelper
+
+SECRET_KEY = "your-secret"
+REFRESH_SECRET_KEY = "your-refresh-secret"
 
 
 def hash_password(password):
@@ -13,9 +17,22 @@ def verify_password(password, hashed):
     return bcrypt.checkpw(password.encode(), hashed.encode())
 
 
-def create_token(user):
-    payload = {
-        "user_id": user["id"],
-        "exp": datetime.now(timezone.utc) + timedelta(hours=2),
-    }
-    return jwt.encode(payload, SECRET, algorithm="HS256")
+def create_token(payload: dict, expires_in: int = 15) -> str:
+    data = payload.copy()
+    data["exp"] = datetime.now(timezone.utc) + timedelta(minutes=expires_in)
+    return jwt.encode(data, SECRET_KEY, algorithm="HS256")
+
+
+def create_refresh_token(payload: dict, expires_in: int = 60 * 24 * 7) -> str:
+    data = payload.copy()
+    data["exp"] = datetime.now(timezone.utc) + timedelta(minutes=expires_in)
+    return jwt.encode(data, REFRESH_SECRET_KEY, algorithm="HS256")
+
+
+def verify_refresh_token(token: str) -> Dict[str, Any]:
+    try:
+        return jwt.decode(token, REFRESH_SECRET_KEY, algorithms=["HS256"])
+    except jwt.ExpiredSignatureError:
+        raise CustomGraphQLExceptionHelper("Refresh token expirado")
+    except jwt.InvalidTokenError:
+        raise CustomGraphQLExceptionHelper("Refresh token inválido")

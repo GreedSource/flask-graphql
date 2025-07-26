@@ -5,23 +5,6 @@ type User {
   isAdmin: Boolean!
 }
 
-input RegisterInput {
-  username: String!
-  email: String!
-  password: String!
-  confirm_password: String!
-}
-
-input LoginInput {
-  username: String!
-  password: String!
-}
-
-type AuthPayload {
-  token: String!
-  user: User!
-}
-
 extend type Query {
   users: [User!]!
   user(id: ID!): User
@@ -34,10 +17,7 @@ input UpdateUserInput {
   isAdmin: Boolean
 }
 
-type Mutation {
-  register(input: RegisterInput!): AuthPayload!
-  login(input: LoginInput!): AuthPayload!
-  recoverPassword(email: String!): Boolean!
+extend type Mutation {
   updateUser(input: UpdateUserInput!): User!
   deleteUser(id: ID!): Boolean!
 }

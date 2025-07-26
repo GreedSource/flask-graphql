@@ -1,0 +1,28 @@
+input RegisterInput {
+  username: String!
+  email: String!
+  password: String!
+  confirm_password: String!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+type AuthResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type AccessTokenResponse {
+  accessToken: String!
+}
+
+type Mutation {
+  register(input: RegisterInput!): AuthResponse!
+  login(input: LoginInput!): AuthResponse!
+  recoverPassword(email: String!): Boolean!
+  refreshToken(refreshToken: String!): AccessTokenResponse!
+}
