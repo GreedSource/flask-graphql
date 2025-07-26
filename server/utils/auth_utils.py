@@ -21,7 +21,7 @@ def verify_password(password, hashed):
 
 def create_token(payload: dict, expires_in: int = 15) -> str:
     data = payload.copy()
-    data["exp"] = datetime.now(timezone.utc) + timedelta(seconds=5)
+    data["exp"] = datetime.now(timezone.utc) + timedelta(minutes=expires_in)
     return jwt.encode(data, SECRET_KEY, algorithm="HS256")
 
 
