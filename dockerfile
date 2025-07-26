@@ -9,14 +9,13 @@ ENV TZ=America/Merida
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Instalar solo lo esencial
+# Instalar dependencias del sistema (optimizadas para MongoDB SSL)
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    curl \
+    ca-certificates \
+    libssl-dev \
     gcc \
-    libffi-dev \
-    libpq-dev \
-    ca-certificates && \
-    update-ca-certificates && \
+    python3-dev \
+    && update-ca-certificates --fresh \
     && rm -rf /var/lib/apt/lists/*
 
 # Crear directorio de trabajo
