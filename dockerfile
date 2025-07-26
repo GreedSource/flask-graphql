@@ -28,5 +28,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY server/ server/
 COPY app.py .
 
+EXPOSE 5000
+
 # Comando para correr la app (ajústalo según tu entrypoint)
 CMD ["python", "app.py"]
