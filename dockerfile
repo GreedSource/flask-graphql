@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     gcc \
     libffi-dev \
     libpq-dev \
+    ca-certificates && \
+    update-ca-certificates && \
     && rm -rf /var/lib/apt/lists/*
 
 # Crear directorio de trabajo
