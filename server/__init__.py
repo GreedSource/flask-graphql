@@ -42,7 +42,22 @@ def create_app():
             debug=app.debug,
             error_formatter=custom_format_error,
         )
+
+        # Status HTTP por defecto
         status_code = 200 if success else 400
+
+        # Si hay errores, busca si alguno tiene código UNAUTHORIZED (u otro)
+        if "errors" in result:
+            for err in result["errors"]:
+                code = err.get("extensions", {}).get("code", "")
+                if code == "UNAUTHORIZED" or code == "UNAUTHENTICATED":
+                    status_code = 401
+                    break
+                elif code == "FORBIDDEN":
+                    status_code = 403
+                    break
+                # Agrega más casos si quieres
+
         return jsonify(result), status_code
 
     return app

@@ -3,6 +3,7 @@ import bcrypt
 import jwt
 from datetime import datetime, timedelta, timezone
 
+from server.enums.http_error_code_enum import HTTPErrorCode
 from server.helpers.custom_graphql_exception_helper import CustomGraphQLExceptionHelper
 
 SECRET_KEY = "your-secret"
@@ -36,3 +37,16 @@ def verify_refresh_token(token: str) -> Dict[str, Any]:
         raise CustomGraphQLExceptionHelper("Refresh token expirado")
     except jwt.InvalidTokenError:
         raise CustomGraphQLExceptionHelper("Refresh token inválido")
+
+
+def verify_token(token: str) -> Dict[str, Any]:
+    try:
+        return jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+    except jwt.ExpiredSignatureError:
+        raise CustomGraphQLExceptionHelper(
+            "Access token expirado", HTTPErrorCode.UNAUTHORIZED
+        )
+    except jwt.InvalidTokenError:
+        raise CustomGraphQLExceptionHelper(
+            "Access token inválido", HTTPErrorCode.UNAUTHORIZED
+        )

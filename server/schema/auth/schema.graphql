@@ -26,3 +26,7 @@ type Mutation {
   recoverPassword(email: String!): Boolean!
   refreshToken(refreshToken: String!): AccessTokenResponse!
 }
+
+extend type Query {
+  profile: User!
+}

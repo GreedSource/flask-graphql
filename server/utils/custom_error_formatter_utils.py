@@ -3,7 +3,6 @@ from graphql import GraphQLError
 from pydantic import ValidationError
 
 from server.helpers.custom_graphql_exception_helper import CustomGraphQLExceptionHelper
-from server.helpers.logger_helper import LoggerHelper
 
 
 def custom_format_error(error: GraphQLError, debug: bool = False):
